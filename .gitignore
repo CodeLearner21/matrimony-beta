@@ -1,0 +1,9 @@
+src/.vs/
+src/Matrimony.Database.Entities/bin/
+src/Matrimony.Database.Entities/obj/
+src/Matrimony.Database/bin/
+src/Matrimony.Database/obj/
+src/Matrimony.Dtos/bin/
+src/Matrimony.Dtos/obj/
+src/Matrimony.WebAPI/bin/
+src/Matrimony.WebAPI/obj/
