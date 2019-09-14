@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Matrimony.WebAPI.Controllers
+namespace Matrimony.WebAPI.V1.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiExplorerSettings(IgnoreApi = true)]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
