@@ -1,4 +1,5 @@
 ﻿using Matrimony.Database.Entities.V1;
+using Matrimony.Database.Extensions;
 using Matrimony.Database.V1;
 using Matrimony.WebAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -91,7 +92,15 @@ namespace Matrimony.WebAPI
                 app.UseHsts();
             }
 
-            
+            // Update Database
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                if (!serviceScope.ServiceProvider.GetService<ApiContext>().AllMigrationsApplied())
+                {
+                    serviceScope.ServiceProvider.GetService<ApiContext>().Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<ApiContext>().EnsureSeeded();
+                }
+            }
 
             app.UseHttpsRedirection();
             app.UseMvc();
