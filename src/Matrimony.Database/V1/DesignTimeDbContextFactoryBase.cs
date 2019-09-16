@@ -23,8 +23,7 @@ namespace Matrimony.Database.V1
         public TContext Create()
         {
             var environmentName =
-                Environment.GetEnvironmentVariable(
-                    "ASPNETCORE_ENVIRONMENT");
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
             var basePath = AppContext.BaseDirectory;
 
@@ -46,8 +45,7 @@ namespace Matrimony.Database.V1
 
             if (string.IsNullOrWhiteSpace(connstr))
             {
-                throw new InvalidOperationException(
-                    "Could not find a connection string named 'Default'.");
+                throw new InvalidOperationException("Could not find a connection string named 'Default'.");
             }
             return Create(connstr);
         }
