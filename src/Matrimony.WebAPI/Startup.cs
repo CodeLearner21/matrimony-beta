@@ -1,8 +1,13 @@
-﻿using Matrimony.WebAPI.Extensions;
+﻿using Matrimony.Database.Entities;
+using Matrimony.Database.Extensions;
+using Matrimony.Database;
+using Matrimony.WebAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -25,6 +30,22 @@ namespace Matrimony.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add framwork services
+            services.AddDbContext<ApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), b => b.MigrationsAssembly("Matrimony.Database")));
+
+            // add identity
+            var identityBuilder = services.AddIdentityCore<AppUser>(o =>
+            {
+                // configure identity options
+                o.Password.RequireDigit = false;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 6;
+            });
+            identityBuilder = new IdentityBuilder(identityBuilder.UserType, typeof(IdentityRole), identityBuilder.Services);
+            identityBuilder.AddEntityFrameworkStores<ApiContext>().AddDefaultTokenProviders();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             // Add ApiVersioning
@@ -71,7 +92,15 @@ namespace Matrimony.WebAPI
                 app.UseHsts();
             }
 
-            
+            // Update Database
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                if (!serviceScope.ServiceProvider.GetService<ApiContext>().AllMigrationsApplied())
+                {
+                    serviceScope.ServiceProvider.GetService<ApiContext>().Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<ApiContext>().EnsureSeeded();
+                }
+            }
 
             app.UseHttpsRedirection();
             app.UseMvc();
