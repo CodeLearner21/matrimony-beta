@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Matrimony.Database.Entities.V1
+namespace Matrimony.Database.Entities
 {
-    public class AppRole : IdentityRole
+    public class AppUser : IdentityUser
     {
     }
 }

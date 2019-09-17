@@ -1,5 +1,5 @@
-﻿using Matrimony.Database.Entities.V1;
-using Matrimony.Database.V1;
+﻿using Matrimony.Database.Entities;
+using Matrimony.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;

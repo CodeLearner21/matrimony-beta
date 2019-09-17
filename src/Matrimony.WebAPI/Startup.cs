@@ -1,6 +1,6 @@
-﻿using Matrimony.Database.Entities.V1;
+﻿using Matrimony.Database.Entities;
 using Matrimony.Database.Extensions;
-using Matrimony.Database.V1;
+using Matrimony.Database;
 using Matrimony.WebAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +31,7 @@ namespace Matrimony.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framwork services
-            services.AddDbContext<ApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), b => b.MigrationsAssembly("Matrimony.Database.Entities")));
+            services.AddDbContext<ApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), b => b.MigrationsAssembly("Matrimony.Database")));
 
             // add identity
             var identityBuilder = services.AddIdentityCore<AppUser>(o =>

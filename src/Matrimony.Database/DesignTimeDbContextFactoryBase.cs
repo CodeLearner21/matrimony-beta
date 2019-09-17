@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Matrimony.Database.V1
+namespace Matrimony.Database
 {
     public abstract class DesignTimeDbContextFactoryBase<TContext> :
         IDesignTimeDbContextFactory<TContext> where TContext : DbContext
@@ -17,13 +17,11 @@ namespace Matrimony.Database.V1
                 Directory.GetCurrentDirectory(),
                 Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
         }
-        protected abstract TContext CreateNewInstance(
-            DbContextOptions<TContext> options);
+        protected abstract TContext CreateNewInstance(DbContextOptions<TContext> options);
 
         public TContext Create()
         {
-            var environmentName =
-                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
             var basePath = AppContext.BaseDirectory;
 
@@ -53,9 +51,7 @@ namespace Matrimony.Database.V1
         private TContext Create(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
-                throw new ArgumentException(
-             $"{nameof(connectionString)} is null or empty.",
-             nameof(connectionString));
+                throw new ArgumentException($"{nameof(connectionString)} is null or empty.", nameof(connectionString));
 
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
 

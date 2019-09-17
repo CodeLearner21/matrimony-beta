@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Matrimony.Database.V1
+namespace Matrimony.Database
 {
     public class DbContextFactory : DesignTimeDbContextFactoryBase<ApiContext>
     {
