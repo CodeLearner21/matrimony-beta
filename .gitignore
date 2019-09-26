@@ -7,3 +7,5 @@ src/Matrimony.Dtos/bin/
 src/Matrimony.Dtos/obj/
 src/Matrimony.WebAPI/bin/
 src/Matrimony.WebAPI/obj/
+src/Matrimony.Services/obj/
+src/Matrimony.Services/bin/

@@ -11,6 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.4" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.1" />
@@ -25,6 +28,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Matrimony.Database.Entities\Matrimony.Database.Entities.csproj" />
     <ProjectReference Include="..\Matrimony.Database\Matrimony.Database.csproj" />
+    <ProjectReference Include="..\Matrimony.Dtos\Matrimony.Dtos.csproj" />
+    <ProjectReference Include="..\Matrimony.Services\Matrimony.Services.csproj" />
   </ItemGroup>
 
 </Project>

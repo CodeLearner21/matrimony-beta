@@ -15,6 +15,13 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.IO;
 using System.Reflection;
+using Autofac;
+using Matrimony.Database.Repository.Interfaces;
+using Matrimony.Database.Repository;
+using Matrimony.Services;
+using Matrimony.Services.Interfaces;
+using Autofac.Extensions.DependencyInjection;
+using System;
 
 namespace Matrimony.WebAPI
 {
@@ -28,7 +35,7 @@ namespace Matrimony.WebAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framwork services
             services.AddDbContext<ApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default"), b => b.MigrationsAssembly("Matrimony.Database")));
@@ -47,7 +54,7 @@ namespace Matrimony.WebAPI
             identityBuilder.AddEntityFrameworkStores<ApiContext>().AddDefaultTokenProviders();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
             // Add ApiVersioning
             services.AddApiVersioning(options =>
             {
@@ -77,7 +84,20 @@ namespace Matrimony.WebAPI
                 // integrate xml comments
                 options.IncludeXmlComments(XmlCommentsFilePath);
             });
+
+            // Autofac
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new AutofacDIModule());
+            builder.RegisterModule(new MappingProfileModule());
+
+            builder.Populate(services);
+            var container = builder.Build();
+            // Create the IServiceProvider based on the container.
+            return new AutofacServiceProvider(container);
         }
+
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider provider)
