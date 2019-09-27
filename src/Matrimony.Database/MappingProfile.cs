@@ -11,10 +11,8 @@ namespace Matrimony.Database
     {
         public MappingProfile()
         {
-            CreateMap<UserRegisterDto, AppUser>()
-                .ConstructUsing(u => new AppUser { FirstName = u.FirstName, LastName = u.LastName, Email = u.Email, PasswordHash = u.Password });
-            CreateMap<AppUser, UserRegisterDto>()
-                .ConstructUsing(au => new UserRegisterDto(au.FirstName, au.LastName, au.Email, au.PasswordHash));
+            CreateMap<UserRegisterDto, AppUser>();
+            CreateMap<AppUser, UserRegisterDto>();
         }
     }
 }

@@ -10,5 +10,7 @@ namespace Matrimony.Services.Interfaces
     public interface IAccountService
     {
         Task<IdentityResult> RegisterUser(UserRegisterDto userRegister);
+
+        Task<Token> LoginUser(UserLoginDto userLogin);
     }
 }

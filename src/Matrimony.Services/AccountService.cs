@@ -15,10 +15,12 @@ namespace Matrimony.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public AccountService(IUserRepository userRepository, IMapper mapper)
+        private readonly IJwtFactory _jwtFactory;
+        public AccountService(IUserRepository userRepository, IMapper mapper, IJwtFactory jwtFactory)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _jwtFactory = jwtFactory;
         }
 
         public async Task<IdentityResult> RegisterUser(UserRegisterDto userRegister)
@@ -34,6 +36,26 @@ namespace Matrimony.Services
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task<Token> LoginUser(UserLoginDto userLogin)
+        {
+            if(!string.IsNullOrEmpty(userLogin.Email) && !string.IsNullOrEmpty(userLogin.Password))
+            {
+                // Confirm we have user with given email address
+                var user = await _userRepository.FindByEmail(userLogin.Email);
+                if(user != null)
+                {
+                    // Validate password
+                    if(await _userRepository.CheckPassword(user, userLogin.Password))
+                    {
+                        Token token = await _jwtFactory.GenerateEncodedToken(user.Id, user.UserName);
+                        return token;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }
