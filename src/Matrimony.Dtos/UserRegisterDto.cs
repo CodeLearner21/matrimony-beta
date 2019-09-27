@@ -17,13 +17,5 @@ namespace Matrimony.Dtos
         [Required(ErrorMessage = "Password is required field")]
         public string Password { get; set; }
 
-
-        public UserRegisterDto(string firstName, string lastName, string email, string password)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            Password = password;
-        }
     }
 }

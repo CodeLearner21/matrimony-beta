@@ -26,16 +26,34 @@ namespace Matrimony.WebAPI.V1.Controllers
         [Route("Register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Register(UserRegisterDto userRegister)
+        public async Task<ActionResult> SignUp(UserRegisterDto userRegister)
         {
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(ModelState);
 
             var result = await _accountService.RegisterUser(userRegister);
             if(!result.Succeeded)
                 return BadRequest(result.Errors);
 
             return Ok();
+        }
+
+        
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("Login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> SignIn(UserLoginDto userLogin)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var token = await _accountService.LoginUser(userLogin);
+            if (!string.IsNullOrWhiteSpace(token.AuthToken))
+                return Ok(token);
+
+            return BadRequest();
         }
     }
 }
