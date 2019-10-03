@@ -10,5 +10,6 @@ namespace Matrimony.Services.Interfaces
     {
         Task<int> CreatePortfolio(CreatePortfolioDto createPortfolio);
         Task<UserPorfolioDto> GetPortfolioById(int id);
+        Task<UserPorfolioDto> GetPortfolioByUserId(string userId);
     }
 }
