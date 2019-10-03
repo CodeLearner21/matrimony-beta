@@ -54,5 +54,10 @@ namespace Matrimony.Database.Repository
             return  await _userManager.FindByNameAsync(userName);
         }
 
+        public async Task<AppUser> FindById(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId);
+        }
+
     }
 }

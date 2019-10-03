@@ -1,7 +1,11 @@
-﻿using Matrimony.Database.Entities;
-using Matrimony.Database.Extensions;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Matrimony.Database;
+using Matrimony.Database.Entities;
+using Matrimony.Database.Extensions;
+using Matrimony.Services.Auth;
 using Matrimony.WebAPI.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -12,21 +16,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.IO;
 using System.Reflection;
-using Autofac;
-using Matrimony.Database.Repository.Interfaces;
-using Matrimony.Database.Repository;
-using Matrimony.Services;
-using Matrimony.Services.Interfaces;
-using Autofac.Extensions.DependencyInjection;
-using System;
-using Matrimony.Services.Helpers;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Matrimony.Services.Auth;
 
 namespace Matrimony.WebAPI
 {
@@ -157,17 +152,7 @@ namespace Matrimony.WebAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            // Update Database
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                if (!serviceScope.ServiceProvider.GetService<ApiContext>().AllMigrationsApplied())
-                {
-                    serviceScope.ServiceProvider.GetService<ApiContext>().Database.Migrate();
-                    serviceScope.ServiceProvider.GetService<ApiContext>().EnsureSeeded();
-                }
-            }
-
+            
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
@@ -180,6 +165,17 @@ namespace Matrimony.WebAPI
                     options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
                 }
             });
+
+            
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                if (!serviceScope.ServiceProvider.GetService<ApiContext>().AllMigrationsApplied())
+                {
+                    serviceScope.ServiceProvider.GetService<ApiContext>().Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<ApiContext>().EnsureSeeded();
+                }
+
+            }
         }
 
 

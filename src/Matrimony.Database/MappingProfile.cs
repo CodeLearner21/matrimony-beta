@@ -13,6 +13,15 @@ namespace Matrimony.Database
         {
             CreateMap<UserRegisterDto, AppUser>();
             CreateMap<AppUser, UserRegisterDto>();
+
+            CreateMap<PortfolioType, PortfolioTypeDto>();
+            CreateMap<PortfolioTypeDto, PortfolioType>();
+
+            CreateMap<UserPorfolioDto, Portfolio>();
+            CreateMap<Portfolio, UserPorfolioDto>();
+
+            CreateMap<CreatePortfolioDto, Portfolio>();
+            CreateMap<Portfolio, CreatePortfolioDto>();
         }
     }
 }

@@ -13,5 +13,6 @@ namespace Matrimony.Database.Repository.Interfaces
         Task<bool> CheckPassword(AppUser user, string password);
         Task<AppUser> FindByEmail(string email);
         Task<AppUser> FindByName(string userName);
+        Task<AppUser> FindById(string userId);
     }
 }

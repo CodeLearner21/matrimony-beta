@@ -26,9 +26,13 @@ namespace Matrimony.WebAPI
 
             // Register Repositories
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<ResourceRepository>().As<IResourceRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<PortfolioRepository>().As<IPortfolioRepository>().InstancePerLifetimeScope();
 
             // Register Services
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
+            builder.RegisterType<ResourceService>().As<IResourceService>().InstancePerLifetimeScope();
+            builder.RegisterType<PortfolioService>().As<IPortfolioService>().InstancePerLifetimeScope();
         }
     }
 }
