@@ -72,5 +72,25 @@ namespace Matrimony.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<UserPorfolioDto> GetPortfolioByUserId(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+                return null;
+
+            try
+            {
+                var result = await _portfolioRepository.GetByUserIdAsync(userId);
+                if (result == null)
+                    return null;
+
+                return _mapper.Map<UserPorfolioDto>(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error - Portfolio Service Exception: " + ex.Message + ex.StackTrace);
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

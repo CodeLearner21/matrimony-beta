@@ -59,5 +59,25 @@ namespace Matrimony.Database.Repository
             }
 
         }
+
+        public async Task<Portfolio> GetByUserIdAsync(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+                return null;
+
+            try
+            {
+                var result = await _context.Portfolios.Include(p => p.PortfolioType).FirstOrDefaultAsync(p => p.User.Id == userId);
+                if (result != null)
+                    return result;
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error - Portfolio Repository Exception: " + ex.Message + ex.StackTrace);
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace Matrimony.Database.Repository.Interfaces
     {
         Task<int> CreateAsync(Portfolio portfolio);
         Task<Portfolio> GetByIdAsync(int id);
+        Task<Portfolio> GetByUserIdAsync(string userId);
     }
 }
