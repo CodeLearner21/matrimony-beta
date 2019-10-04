@@ -32,6 +32,7 @@ namespace Matrimony.WebAPI
             Configuration = configuration;
         }
 
+        readonly string CustomCORSPolicy = "_customCORSPolicy";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -94,6 +95,18 @@ namespace Matrimony.WebAPI
             identityBuilder = new IdentityBuilder(identityBuilder.UserType, typeof(IdentityRole), identityBuilder.Services);
             identityBuilder.AddEntityFrameworkStores<ApiContext>().AddDefaultTokenProviders();
 
+            // Enable CORS            
+            services.AddCors(options =>
+            {
+                options.AddPolicy(CustomCORSPolicy,
+                b =>
+                {
+                    b.WithOrigins("http://localhost:4200");
+                    b.AllowAnyMethod();
+                    b.AllowAnyHeader();
+                });
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Add ApiVersioning
@@ -152,7 +165,8 @@ namespace Matrimony.WebAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+
+            app.UseCors(CustomCORSPolicy);
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
