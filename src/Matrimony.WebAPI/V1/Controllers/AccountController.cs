@@ -50,7 +50,7 @@ namespace Matrimony.WebAPI.V1.Controllers
                 return BadRequest(ModelState);
 
             var token = await _accountService.LoginUser(userLogin);
-            if (!string.IsNullOrWhiteSpace(token.AuthToken))
+            if (token != null && !string.IsNullOrWhiteSpace(token.AuthToken))
                 return Ok(token);
 
             return BadRequest();
